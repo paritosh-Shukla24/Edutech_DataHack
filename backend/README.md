@@ -49,11 +49,13 @@ Access at: `http://127.0.0.1:5000/`
 
 ```
 <repository-folder>/
-├── frontend/         # Frontend files (see its README.md)
-├── myenv/            # Python virtual environment
-├── app.py            # Flask application entry point
-├── requirements.txt  # Python dependencies
-└── README.md         # This file
+├── frontend/           # Frontend files (see its README.md)
+├── backend/            # New folder for backend components
+│   ├── myenv/          # Python virtual environment
+│   ├── app.py          # Flask application entry point
+│   └── requirements.txt # Python dependencies
+└── README.md           # This file
+
 ```
 
 ## Git Commands

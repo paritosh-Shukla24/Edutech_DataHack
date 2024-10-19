@@ -1,4 +1,5 @@
 import React from "react";
+import { ReactTyped } from "react-typed"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import AboutUs from "./AboutUs";
@@ -24,9 +25,13 @@ const Home = () => {
         className="relative z-10 flex justify-center items-center w-full h-full flex-col"
         style={blockyTextStyle}
       >
-        <h1 className="text-6xl text-white py-10">Something</h1>
+        <h1 className="text-9xl text-white">CURIOSITAS</h1>
+        <h1 className="text-xl text-white mt-5 italic">{""}
+        <ReactTyped strings={["A Novel Way To Feed Your Curiosity"]}  typeSpeed={50} cursorChar=""/>
+        </h1>
+
         <button
-          className="text-xl text-white py-10 flex items-center space-x-2 animate-pulse"
+          className="text-xl text-white mt-28 flex items-center space-x-2 animate-pulse"
           onClick={() =>
             window.scrollTo({ top: window.innerHeight, behavior: "smooth" })
           }

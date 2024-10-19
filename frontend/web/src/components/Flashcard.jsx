@@ -1,8 +1,217 @@
+// import React, { useState } from 'react';
+// import { FaArrowRight, FaArrowLeft } from 'react-icons/fa';
+// import { motion } from 'framer-motion';
+// import ReactCardFlip from 'react-card-flip';
+// import axios from 'axios';
+
+// const Flashcard = () => {
+//   const [isFlipped, setIsFlipped] = useState(false);
+//   const [currentIndex, setCurrentIndex] = useState(0);
+//   const [quizData, setQuizData] = useState(null); // Store the quiz data from the API
+//   const [fileUploaded, setFileUploaded] = useState(false);
+//   const [file, setFile] = useState(null);
+//   const [fileSelected, setFileSelected] = useState(false); // For managing the selected file
+//   const [selectedAnswer, setSelectedAnswer] = useState(null); // Store user's selected answer
+//   const [isCorrect, setIsCorrect] = useState(null); // Track if the selected answer is correct
+
+//   // Handle card flip
+//   const handleCardFlip = () => {
+//     if (quizData !== null) {
+//       setIsFlipped(!isFlipped);
+//     }
+//   };
+
+//   // Handle answer selection
+//   const handleAnswerSelection = (option) => {
+//     setSelectedAnswer(option);
+//     if (option === quizData.answer) {
+//       setIsCorrect(true);
+//     } else {
+//       setIsCorrect(false);
+//     }
+//   };
+
+//   // Handle navigation (next question)
+//   const handleNext = async () => {
+//     try {
+//       const response = await axios.post('http://localhost:8000/next_questions/', {
+//         type: localStorage.getItem('fileExtension') // Or other file types, depending on your logic
+//       });
+
+//       const newQuestionData = response.data;
+//       console.log(newQuestionData.link)
+      
+//       if (newQuestionData && newQuestionData.question && newQuestionData.options && newQuestionData.answer) {
+//         setQuizData(newQuestionData); // Update quiz data with new question
+//         setIsFlipped(false); // Reset flip state
+//         setCurrentIndex(currentIndex + 1); // Move to the next question index
+//         setSelectedAnswer(null); // Reset selected answer
+//         setIsCorrect(null); // Reset correctness state
+//       }
+//     } catch (error) {
+//       console.error('Failed to fetch the next question:', error);
+//     }
+//   };
+
+//   const handlePrevious = () => {
+//     if (currentIndex > 0) {
+//       setCurrentIndex(currentIndex - 1);
+//     }
+//   };
+
+//   // Handle file selection
+//   const handleFileSelect = (e) => {
+//     const uploadedFile = e.target.files[0]; // Get the uploaded file
+//     if (uploadedFile) {
+//       setFile(uploadedFile);
+//       setFileSelected(true); // Enable the Upload button
+      
+//       // Extract and store file extension in local storage
+//       const fileExtension = uploadedFile.name.split('.').pop();
+//       localStorage.setItem('fileExtension', fileExtension);
+      
+//       console.log(`File extension stored: ${fileExtension}`); // Optional: Log to check
+//     }
+//   };
+
+//   // Handle file upload
+//   const handleFileUpload = async () => {
+//     if (file) {
+//       const formData = new FormData();
+//       formData.append('file', file);
+
+//       try {
+//         const response = await axios.post('http://localhost:8000/upload/', formData, {
+//           headers: {
+//             'Content-Type': 'multipart/form-data',
+//           },
+//         });
+
+//         // Handle the response depending on the file type
+//         const data = response.data;
+
+//         if (data.question && data.options && data.answer) {
+//           setQuizData(data); // Store quiz data
+//         } else {
+//           alert('Invalid file type or data.');
+//         }
+
+//         setFileUploaded(true); // File has been uploaded
+//       } catch (error) {
+//         console.error('File upload failed:', error);
+//       }
+//     }
+//   };
+
+//   return (
+//     <div className="min-h-screen bg-gradient-to-r from-purple-600 to-indigo-600 flex justify-center items-center">
+//       <div className="w-full max-w-lg mx-auto">
+//         {!fileUploaded ? (
+//           <div className="bg-white p-6 rounded-lg shadow-lg">
+//             <h2 className="text-xl font-bold mb-4 text-center text-gray-700">
+//               Upload a File to Proceed
+//             </h2>
+//             <input
+//               type="file"
+//               onChange={handleFileSelect}
+//               className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
+//             />
+//             <button
+//               onClick={handleFileUpload}
+//               disabled={!fileSelected} // Disable if no file selected
+//               className={`mt-4 w-full bg-blue-500 text-white py-2 px-4 rounded-lg ${!fileSelected ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-600'}`}
+//             >
+//               Upload
+//             </button>
+//           </div>
+//         ) : (
+//           <ReactCardFlip isFlipped={isFlipped} flipDirection="vertical">
+//             {/* Front (Question) */}
+//             <motion.div
+//               className={`relative w-full h-96 ${
+//                 selectedAnswer
+//                   ? isCorrect
+//                     ? 'bg-green-500'
+//                     : 'bg-red-500'
+//                   : 'bg-blue-500'
+//               } text-white flex flex-col justify-center items-center rounded-lg shadow-xl transition-transform duration-700 ease-in-out cursor-pointer p-4`}
+//               whileHover={{ scale: 1.05 }}
+//               whileTap={{ scale: 0.95 }}
+//               onClick={handleCardFlip}
+//             >
+//               <h2 className="text-2xl font-bold mb-4 text-center">{quizData.question}</h2>
+
+//               <div className="mt-6 grid grid-cols-1 gap-3 px-4 w-full">
+//                 {quizData.options.map((option, index) => (
+//                   <motion.div
+//                     key={index}
+//                     className={`p-3 rounded-lg cursor-pointer text-black bg-gray-100 ${
+//                       selectedAnswer === option ? 'border-2 border-yellow-400' : ''
+//                     }`}
+//                     whileTap={{ scale: 0.95 }}
+//                     onClick={() => handleAnswerSelection(option)}
+//                   >
+//                     {option}
+//                   </motion.div>
+//                 ))}
+//               </div>
+//             </motion.div>
+
+//             {/* Back (Answer) */}
+//             <motion.div
+//               className="relative w-full h-96 bg-green-500 text-white flex flex-col justify-center items-center rounded-lg shadow-xl cursor-pointer p-4"
+//               whileHover={{ scale: 1.05 }}
+//               whileTap={{ scale: 0.95 }}
+//               onClick={handleCardFlip}
+//             >
+//               <h2 className="text-2xl font-bold mb-4">Solution</h2>
+//               <p className="text-lg overflow-y-auto">Correct answer: {quizData.answer}</p>
+//               <p className="mt-4 text-sm">{quizData.solution}</p>
+//             </motion.div>
+//           </ReactCardFlip>
+//         )}
+
+//         {/* Navigation buttons (only show if file is uploaded) */}
+//         {fileUploaded && (
+//           <div className="flex justify-between items-center mt-6">
+//             <button
+//               onClick={handlePrevious}
+//               disabled={currentIndex === 0}
+//               className="bg-gray-300 p-3 rounded-full hover:bg-gray-400 transition-transform duration-200 ease-in-out disabled:opacity-50"
+//             >
+//               <FaArrowLeft />
+//             </button>
+
+//             <span className="text-white text-lg">
+//               {currentIndex + 1} / {quizData.options.length}
+//             </span>
+
+//             <button
+//               onClick={handleNext}
+//               disabled={currentIndex === quizData.options.length - 1}
+//               className="bg-gray-300 p-3 rounded-full hover:bg-gray-400 transition-transform duration-200 ease-in-out disabled:opacity-50"
+//             >
+//               <FaArrowRight />
+//             </button>
+//           </div>
+//         )}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Flashcard;
+
 import React, { useState } from 'react';
 import { FaArrowRight, FaArrowLeft } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import ReactCardFlip from 'react-card-flip';
 import axios from 'axios';
+
+const blockyTextStyle = {
+  fontFamily: "Nasalization",
+  textShadow: "2.25px 2.25px 0px rgba(0, 0, 0, 0.3)",
+};
 
 const Flashcard = () => {
   const [isFlipped, setIsFlipped] = useState(false);
@@ -11,6 +220,8 @@ const Flashcard = () => {
   const [fileUploaded, setFileUploaded] = useState(false);
   const [file, setFile] = useState(null);
   const [fileSelected, setFileSelected] = useState(false); // For managing the selected file
+  const [selectedAnswer, setSelectedAnswer] = useState(null); // To track selected answer
+  const [isCorrect, setIsCorrect] = useState(null); // To track if the answer is correct or not
 
   // Handle card flip
   const handleCardFlip = () => {
@@ -24,15 +235,16 @@ const Flashcard = () => {
     try {
       const response = await axios.post('http://localhost:8000/next_questions/', {
         type: localStorage.getItem('fileExtension') // Or other file types, depending on your logic
-      
       });
 
       const newQuestionData = response.data;
-      
+      console.log(newQuestionData.link);
       if (newQuestionData && newQuestionData.question && newQuestionData.options && newQuestionData.answer) {
         setQuizData(newQuestionData); // Update quiz data with new question
         setIsFlipped(false); // Reset flip state
         setCurrentIndex(currentIndex + 1); // Move to the next question index
+        setSelectedAnswer(null); // Reset selected answer for new question
+        setIsCorrect(null); // Reset correctness
       }
     } catch (error) {
       console.error('Failed to fetch the next question:', error);
@@ -75,7 +287,7 @@ const Flashcard = () => {
 
         // Handle the response depending on the file type
         const data = response.data;
-
+        console.log(data.link);
         if (data.question && data.options && data.answer) {
           setQuizData(data); // Store quiz data
         } else {
@@ -89,18 +301,45 @@ const Flashcard = () => {
     }
   };
 
+  // Handle answer selection
+  const handleOptionSelect = (option) => {
+    setSelectedAnswer(option);
+    if (option === quizData.answer) {
+      setIsCorrect(true); // Correct answer
+    } else {
+      setIsCorrect(false); // Incorrect answer
+    }
+  };
+
+  // Set card color based on answer correctness
+  const cardColor = () => {
+    if (selectedAnswer) {
+      return isCorrect ? 'bg-green-500' : 'bg-red-500';
+    }
+    return 'bg-blue-500'; // Default card color
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-r from-purple-600 to-indigo-600 flex justify-center items-center">
-      <div className="w-full max-w-lg mx-auto">
+    <div className="h-screen flex relative"
+      style={blockyTextStyle}
+    >
+      <video src="/src/assets/152204-802330889.mp4"
+        autoPlay
+        loop
+        muted
+        className='fixed inset-0 w-full h-full object-cover -z-50'
+      />
+
+      <div className="w-full flex flex-col justify-center items-center">
         {!fileUploaded ? (
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-xl font-bold mb-4 text-center text-gray-700">
+          <div className="bg-white bg-opacity-30 p-10 rounded-lg shadow-lg">
+            <h2 className="text-xl font-bold mb-20 text-center text-white">
               Upload a File to Proceed
             </h2>
             <input
               type="file"
               onChange={handleFileSelect}
-              className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
+              className="text-sm mb-5 text-black border flex rounded-sm cursor-pointer focus:outline-none"
             />
             <button
               onClick={handleFileUpload}
@@ -114,7 +353,7 @@ const Flashcard = () => {
           <ReactCardFlip isFlipped={isFlipped} flipDirection="vertical">
             {/* Front (Question) */}
             <motion.div
-              className="relative w-full h-96 bg-blue-500 text-white flex flex-col justify-center items-center rounded-lg shadow-xl transition-transform duration-700 ease-in-out cursor-pointer p-4"
+              className={`relative w-full h-96 ${cardColor()} text-white flex flex-col justify-center items-center rounded-lg shadow-xl transition-transform duration-700 ease-in-out cursor-pointer p-4`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={handleCardFlip}
@@ -125,8 +364,9 @@ const Flashcard = () => {
                 {quizData.options.map((option, index) => (
                   <motion.div
                     key={index}
-                    className="p-3 rounded-lg cursor-pointer text-black bg-gray-100"
+                    className={`p-3 rounded-lg cursor-pointer text-black bg-gray-100 ${selectedAnswer === option ? 'border-2 border-blue-500' : ''}`}
                     whileTap={{ scale: 0.95 }}
+                    onClick={() => handleOptionSelect(option)}
                   >
                     {option}
                   </motion.div>
@@ -144,6 +384,30 @@ const Flashcard = () => {
               <h2 className="text-2xl font-bold mb-4">Solution</h2>
               <p className="text-lg overflow-y-auto">Correct answer: {quizData.answer}</p>
               <p className="mt-4 text-sm">{quizData.solution}</p>
+
+              {/* Conditionally render the link if available */}
+              {quizData.link && (
+                <div className="mt-4 flex flex-col items-center">
+                  <p className="text-sm mb-2">Related Link:</p>
+                  <div className="bg-white text-black p-2 rounded-lg cursor-pointer">
+                    <a
+                      href={quizData.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 underline"
+                    >
+                      {quizData.link}
+                    </a>
+                  </div>
+                  {/* Copy button */}
+                  <button
+                    onClick={() => navigator.clipboard.writeText(quizData.link)}
+                    className="mt-2 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
+                  >
+                    Copy Link
+                  </button>
+                </div>
+              )}
             </motion.div>
           </ReactCardFlip>
         )}
@@ -178,3 +442,4 @@ const Flashcard = () => {
 };
 
 export default Flashcard;
+

@@ -24,7 +24,7 @@ const Login = () => {
           'Content-Type': 'application/x-www-form-urlencoded',  // Set content type
         },
       });
-
+      
       const token = response.data.access_token;
       // Store the JWT token in localStorage for further requests
       localStorage.setItem("token", token);

@@ -3,7 +3,7 @@ import uvicorn
 from PIL import Image,PngImagePlugin
 import google.generativeai as genai
 import json
-
+import ast
 import os
 from dotenv import load_dotenv
 from pydub import AudioSegment
@@ -68,6 +68,7 @@ class Token(BaseModel):
     access_token: str
     token_type: str
 
+quiz = QuizRLAgent(initial_score = 70)
 class TokenData(BaseModel):
     email: str
 
@@ -219,16 +220,19 @@ async def upload_file(file: UploadFile = File(...)):
         """
             response = model_vision.generate_content([input_prompt, prompt])
             clean_response = response.text.strip().replace("```json", "").replace("```", "")
-            print(clean_response)
-            print(type(clean_response))
+            #print(clean_response)
+            #print(type(clean_response))
             quiz_data = json.loads(clean_response)
-            
+            format='video'
+            link=Answering(quiz_data['question'],quiz_data['answer'],quiz_data['options'],format)
+            link_list = ast.literal_eval(link)
+            first_link = link_list[0]
             return {
             "question": quiz_data['question'],
             "options": quiz_data['options'],
             "answer": quiz_data['answer'],
             "solution": quiz_data['solution'],
-             "link": link
+            "link":first_link
         }
     
 
@@ -254,12 +258,17 @@ async def upload_file(file: UploadFile = File(...)):
             print(clean_response)
             print(type(clean_response))
             quiz_data = json.loads(clean_response)
-        
+            format='video'
+            link=Answering(quiz_data['question'],quiz_data['answer'],quiz_data['options'],format)
+            link_list = ast.literal_eval(link)
+            first_link = link_list[0]
+
             return {
             "question": quiz_data['question'],
             "options": quiz_data['options'],
             "answer": quiz_data['answer'],
-            "solution": quiz_data['solution']
+            "solution": quiz_data['solution'],
+            "link":first_link
         }
         elif content_type == "application/vnd.openxmlformats-officedocument.presentationml.presentation":
             text = extract_text_from_pptx(file_content)
@@ -283,12 +292,17 @@ async def upload_file(file: UploadFile = File(...)):
             print(clean_response)
             print(type(clean_response))
             quiz_data = json.loads(clean_response)
-        
+            format='video'
+            link=Answering(quiz_data['question'],quiz_data['answer'],quiz_data['options'],format)
+            link_list = ast.literal_eval(link)
+            first_link = link_list[0]
+
             return {
             "question": quiz_data['question'],
             "options": quiz_data['options'],
             "answer": quiz_data['answer'],
-            "solution": quiz_data['solution']
+            "solution": quiz_data['solution'],
+            "link":first_link
         }
 
         elif content_type in ["image/jpeg", "image/png"]:
@@ -311,11 +325,16 @@ async def upload_file(file: UploadFile = File(...)):
             clean_response = response.text.strip().replace("```json", "").replace("```", "")
             quiz_data = json.loads(clean_response)
             #print(quiz_data)
+            format='video'
+            link=Answering(quiz_data['question'],quiz_data['answer'],quiz_data['options'],format)
+            link_list = ast.literal_eval(link)
+            first_link = link_list[0]
             return {
                 "question":quiz_data['question'],
                 "options":quiz_data['options'],
                 "answer":quiz_data['answer'],
-                "solution": quiz_data['solution']
+                "solution": quiz_data['solution'],
+                "link":first_link
             }
         elif content_type == "audio/mpeg":
                 audio = AudioSegment.from_file(BytesIO(file_content), format="mp3")
@@ -337,15 +356,16 @@ async def upload_file(file: UploadFile = File(...)):
                 response = model_vision.generate_content(input_prompt)
                 clean_response = response.text.strip().replace("```json", "").replace("```", "")
                 quiz_data = json.loads(clean_response)
-                format='audio'
+                format='video'
                 link=Answering(quiz_data['question'],quiz_data['answer'],quiz_data['options'],format)
-                print(link)
+                link_list = ast.literal_eval(link)
+                first_link = link_list[0]
                 return {
                 "question":quiz_data['question'],
                 "options":quiz_data['options'],
                 "answer":quiz_data['answer'],
                 "solution":quiz_data['solution'],
-                "link": link
+                "link": first_link
                 }
        
 
@@ -366,7 +386,7 @@ async def next_question(request_data: NextQuestionRequest):
         file_path= f"./extracted_text.txt"
         with open(file_path, "r", encoding="utf-8") as file:
             file_content = file.read()
-        print(file_content)    
+        #print(file_content)    
 
         difficulty = 'easy'
         previous = "What is the main topic discussed in this content?"
@@ -382,14 +402,19 @@ async def next_question(request_data: NextQuestionRequest):
         """
         response = model_vision.generate_content([input_prompt, prompt])
         clean_response = response.text.strip().replace("```json", "").replace("```", "")
-        print(clean_response)
-        print(type(clean_response))
+        #print(clean_response)
+        #print(type(clean_response))
         quiz_data = json.loads(clean_response)
+        format='video'
+        link=Answering(quiz_data['question'],quiz_data['answer'],quiz_data['options'],format)
+        link_list = ast.literal_eval(link)
+        first_link = link_list[0]
         return {
             "question": quiz_data['question'],
             "options": quiz_data['options'],
             "answer": quiz_data['answer'],
-            "solution": quiz_data['solution']
+            "solution": quiz_data['solution'],
+            "link":first_link
         }    
             
     elif content_type in ["jpeg", "png"]:
@@ -409,11 +434,16 @@ async def next_question(request_data: NextQuestionRequest):
             response = model_vision.generate_content([input_prompt,image, prompt])
             clean_response = response.text.strip().replace("```json", "").replace("```", "")
             quiz_data = json.loads(clean_response)
+            format='video'
+            link=Answering(quiz_data['question'],quiz_data['answer'],quiz_data['options'],format)
+            link_list = ast.literal_eval(link)
+            first_link = link_list[0]
             return {
                 "question":quiz_data['question'],
                 "options":quiz_data['options'],
                 "answer":quiz_data['answer'],
-                "solution": quiz_data['solution']
+                "solution": quiz_data['solution'],
+                "link":first_link
             }
     elif content_type == "mp3":
             file_path=r'temp.wav'
@@ -434,14 +464,17 @@ async def next_question(request_data: NextQuestionRequest):
             response = model_vision.generate_content(input_prompt)
             clean_response = response.text.strip().replace("```json", "").replace("```", "")
             quiz_data = json.loads(clean_response)
-            format='text'
+            format='video'
             link=Answering(quiz_data['question'],quiz_data['answer'],quiz_data['options'],format)
             print(link)
+            link_list = ast.literal_eval(link)
+            first_link = link_list[0]
             return {
                 "question":quiz_data['question'],
                 "options":quiz_data['options'],
                 "answer":quiz_data['answer'],
-                "solution": quiz_data['solution']
+                "solution": quiz_data['solution'],
+                "link ": first_link
                 }
     elif content_type == "docx":
         txt_file_path = f"./extracted_text.txt"
@@ -464,11 +497,16 @@ async def next_question(request_data: NextQuestionRequest):
         print(clean_response)
         print(type(clean_response))
         quiz_data = json.loads(clean_response)
+        format='video'
+        link=Answering(quiz_data['question'],quiz_data['answer'],quiz_data['options'],format)
+        link_list = ast.literal_eval(link)
+        first_link = link_list[0]
         return {
             "question": quiz_data['question'],
             "options": quiz_data['options'],
             "answer": quiz_data['answer'],
-            "solution": quiz_data['solution']
+            "solution": quiz_data['solution'],
+            "link":first_link
         }    
     elif content_type=="pptx":
             txt_file_path = f"./extracted_text.txt"
@@ -492,12 +530,16 @@ async def next_question(request_data: NextQuestionRequest):
             print(clean_response)
             print(type(clean_response))
             quiz_data = json.loads(clean_response)
-        
+            format='video'
+            link=Answering(quiz_data['question'],quiz_data['answer'],quiz_data['options'],format)
+            link_list = ast.literal_eval(link)
+            first_link = link_list[0]
             return {
             "question": quiz_data['question'],
             "options": quiz_data['options'],
             "answer": quiz_data['answer'],
-            "solution": quiz_data['solution']
+            "solution": quiz_data['solution'],
+            "link":first_link
         }
     elif content_type == "mp4":
             return {"filename": file.filename, "type": "Video file received"}

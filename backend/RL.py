@@ -164,21 +164,20 @@ class QuizRLAgent:
         print(f"  Response time weights: {self.weights['response_time']}")
         print(f"  Correctness weights: {self.weights['correctness']}")
 
-# Example usage
-quiz = QuizRLAgent()
 
-responses = [
-    ("easy", 4, True),
-    ("hard", 10, False),
-    ("medium", 18, True),
-    ("hard", 5, True),
-    ("easy", 15, False),
-    ("medium", 7, True),
-    ("hard", 3, True),
-    ("medium", 12, False),
-    ("easy", 6, True),
-    ("hard", 20, False)
-]
+
+# responses = [
+#     ("easy", 4, True),
+#     ("hard", 10, False),
+#     ("medium", 18, True),
+#     ("hard", 5, True),
+#     ("easy", 15, False),
+#     ("medium", 7, True),
+#     ("hard", 3, True),
+#     ("medium", 12, False),
+#     ("easy", 6, True),
+#     ("hard", 20, False)
+# ]
 
 # for difficulty, response_time, correct in responses:
 #     print(f"\nQuestion: {difficulty.capitalize()} | Response Time: {response_time}s | Correct: {correct}")

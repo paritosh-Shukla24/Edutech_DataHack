@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@font-face {
+    font-family: "Nasalization";
+    src: url("/src/assets/nasalization-rg.otf") format("opentype");
+    font-weight: normal;
+    font-style: normal;
+  }
+/* Tailwind CSS for customizing slick-dots */
+
+.slick-dots li button:before {
+  @apply rounded-full;
+  color: black;
+  font-size: 12px;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+
+.slick-dots {
+  @apply flex justify-center items-center;
+}
+
+.slick-dots li {
+  @apply mx-2;
+}
+
+  

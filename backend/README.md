@@ -35,12 +35,13 @@ With the virtual environment active, install required packages:
 pip install -r requirements.txt
 ```
 
-## 3. Running the Flask Application
+## 3. Running the FastAPI Application
 
-Start the Flask app:
+Start the FastApi app:
 
 ```bash
-python app.py
+uvicorn main:app --reload
+
 ```
 
 Access at: `http://127.0.0.1:5000/`
@@ -52,7 +53,7 @@ Access at: `http://127.0.0.1:5000/`
 ├── frontend/           # Frontend files (see its README.md)
 ├── backend/            # New folder for backend components
 │   ├── myenv/          # Python virtual environment
-│   ├── app.py          # Flask application entry point
+│   ├── main.py          # FastAPI application entry point
 │   └── requirements.txt # Python dependencies
 └── README.md           # This file
 

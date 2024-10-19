@@ -222,12 +222,13 @@ async def upload_file(file: UploadFile = File(...)):
             print(clean_response)
             print(type(clean_response))
             quiz_data = json.loads(clean_response)
-        
+            
             return {
             "question": quiz_data['question'],
             "options": quiz_data['options'],
             "answer": quiz_data['answer'],
-            "solution": quiz_data['solution']
+            "solution": quiz_data['solution'],
+             "link": link
         }
     
 
@@ -292,7 +293,9 @@ async def upload_file(file: UploadFile = File(...)):
 
         elif content_type in ["image/jpeg", "image/png"]:
             image = Image.open(BytesIO(file_content))
-            global_image = image  # Assig
+            os.makedirs("./images", exist_ok=True)
+            image_path = f"./images/saved_image.png"  # Save to a proper directory
+            image.save(image_path)  #
             difficulty='easy'
             previous="What is the direction of the force acting on the second object, m2, in relation to the direction of the force acting on the first object, m1"
             input_prompt=f"""You are a Quiz Generator AI. 
@@ -391,6 +394,8 @@ async def next_question(request_data: NextQuestionRequest):
             
     elif content_type in ["jpeg", "png"]:
             difficulty='easy'
+            image_path = "./images/saved_image.png"
+            image = Image.open(image_path)
             previous="What is the direction of the force acting on the second object, m2, in relation to the direction of the force acting on the first object, m1"
             input_prompt=f"""You are a Quiz Generator AI. 
             Your task is to generate a set of quiz questions based on the content of the image provided. 
@@ -401,7 +406,7 @@ async def next_question(request_data: NextQuestionRequest):
             prompt="""
             generate 1 Questions and return in json format exactly 1 questions with 4 options and and also correct answer and small solution,with json attributes named question,options,answer,solution.
             """
-            response = model_vision.generate_content([input_prompt,global_image, prompt])
+            response = model_vision.generate_content([input_prompt,image, prompt])
             clean_response = response.text.strip().replace("```json", "").replace("```", "")
             quiz_data = json.loads(clean_response)
             return {

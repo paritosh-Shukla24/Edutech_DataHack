@@ -28,6 +28,7 @@ const Login = () => {
       const token = response.data.access_token;
       // Store the JWT token in localStorage for further requests
       localStorage.setItem("token", token);
+      localStorage.setItem("email",email);
 
       // Fetch user data and check if they exist
       const userResponse = await axios.get("http://localhost:8000/me", {

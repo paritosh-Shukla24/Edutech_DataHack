@@ -1,42 +1,67 @@
-Colorization of SAR Images Using GANs  
-Introduction  
-Synthetic aperture radar (SAR) images are used in various disciplines, including remote sensing, 
-surveillance, and environmental monitoring. However, SAR images are monochromatic, which limits 
-their interpretability. A GAN combined with a U -Net architecture is investigated here for the 
-colorization of SAR image samples with dimensions of 256x256 pixels.  
-U-Net Architecture  
-U-Net is a convolutional neural network developed for image segmentation, but also accomplishes 
-tasks such as image -to-image translation, including colorization. The architecture of U -Net has a two -
-part structure -the encoder and the decoder.  
-1.Encoder : It reduces the input image progressively using convolutional layers and max -
-pooling. It captures the most salient features while reducing spatial dimensions.  
-2.Decoder : It upsamples the encoded features back to the size of the input image using 
-transposed convolutions, then concatenates the features with the corresponding encoder layer 
-features to maintain spatial information.  
-Convolutional Layers  
-The convolution is one of the crucial operations within U -Net, wherein the filters slide across the 
-input images for feature extraction. Each convolutional layer consists of several filters producing 
-feature maps in the network that represent different noti ons within the image. In the case of SAR 
-image colorization:  
-•Convolution Operation : Each pixel in the output feature map is determined by obtaining 
-the weighted within the cubic tense summation of pixel values. These weights are obtained 
-from convolution filters.  
-•Activation Function : The output from the convolution is subjected to a non -linear 
-activation function  ReLU, to introduce non -linearity.  
-Integration of GANs  
-In this approach, a GAN consists of two neural networks: a generator (U -Net) and a discriminator. The 
-generator transforms the input SAR images into colorized images, while the discriminator evaluates 
-the authenticity of the generated images.  
-•Training : The GAN is trained furthermore through adversarial loss, where the generator 
-plays the adversary to synthesize images that can deceive the discriminator, while the 
-discriminator tries to classify augmented images into real or fake classes. Besides this, the 
-reconstruction loss can enforce that at least some aspects of the colorization feel 
-perceptually plausible (for example, a mean squared error).  
-Results  
-The combination of U -Net and GANs for colorizing 256x256 pixel SAR images has shown promising 
-results. The network is capable of producing visually appealing and realistic colorizations, enhancing 
-interpretability and aiding in tasks such as land cover cla ssification and change detection.  
-Before:    After:  
- 
- 
-256x256 px  128x128 px  
+Paritosh Shukla - 60009220023
+!pip install scikit-fuzzy
+Collecting scikit-fuzzy
+ Downloading scikit_fuzzy-0.5.0-py2.py3-none-any.whl.metadata (2.6 kB)
+Downloading scikit_fuzzy-0.5.0-py2.py3-none-any.whl (920 kB)
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  920.8/920.8 kB  13.4 MB/s  eta 0:0
+0:00
+Installing collected packages: scikit-fuzzy
+Successfully installed scikit-fuzzy-0.5.0
+import numpy as np
+import skfuzzy as fuzz
+from skfuzzy import control as ctrl
+import matplotlib.pyplot  as plt
+dirt = ctrl.Antecedent (np.arange(0, 101, 1), 'dirt')
+grease = ctrl.Antecedent (np.arange(0, 101, 1), 'grease' )
+wash_time  = ctrl.Consequent (np.arange(0, 61, 1), 'wash_time' )
+dirt['low'] = fuzz.trimf(dirt.universe , [0, 0, 50])
+dirt['medium' ] = fuzz.trimf(dirt.universe , [0, 50, 100])
+dirt['high'] = fuzz.trimf(dirt.universe , [50, 100, 100])
+grease['low'] = fuzz.trimf(grease.universe , [0, 0, 50])
+grease['medium' ] = fuzz.trimf(grease.universe , [0, 50, 100])
+grease['high'] = fuzz.trimf(grease.universe , [50, 100, 100])
+wash_time ['very_short' ] = fuzz.trimf(wash_time .universe , [0, 0, 10])
+wash_time ['short'] = fuzz.trimf(wash_time .universe , [10, 20, 25])
+wash_time ['medium' ] = fuzz.trimf(wash_time .universe , [20, 30, 40])
+wash_time ['long'] = fuzz.trimf(wash_time .universe , [30, 50, 60])
+wash_time ['very_long' ] = fuzz.trimf(wash_time .universe , [40, 60, 60])
+rule1 = ctrl.Rule(dirt['low'] & grease['low'], wash_time ['very_short' ])
+rule2 = ctrl.Rule(dirt['low'] & grease['medium' ], wash_time ['short'])
+rule3 = ctrl.Rule(dirt['low'] & grease['high'], wash_time ['medium' ])
+rule4 = ctrl.Rule(dirt['medium' ] & grease['low'], wash_time ['short'])
+rule5 = ctrl.Rule(dirt['medium' ] & grease['medium' ], wash_time ['medium' ])
+rule6 = ctrl.Rule(dirt['medium' ] & grease['high'], wash_time ['long'])
+rule7 = ctrl.Rule(dirt['high'] & grease['low'], wash_time ['medium' ])
+rule8 = ctrl.Rule(dirt['high'] & grease['medium' ], wash_time ['long'])
+rule9 = ctrl.Rule(dirt['high'] & grease['high'], wash_time ['very_long' ])
+wash_control  = ctrl.ControlSystem ([rule1, rule2, rule3, rule4, rule5, rule6,
+wash_simulation  = ctrl.ControlSystemSimulation (wash_control )
+wash_simulation .input['dirt'] = 50
+wash_simulation .input['grease' ] = 50
+In [2]:
+In [5]:wash_simulation .compute()
+defuzzified_wash_time  = wash_simulation .output['wash_time' ]
+print(f"Wash time: {defuzzified_wash_time :.2f} minutes" )
+wash_time .view(sim=wash_simulation )
+fig, (ax1, ax2, ax3) = plt.subplots (nrows=3, figsize=(8, 12))
+ax1.plot(dirt.universe , dirt['low'].mf, 'b', label='Low')
+ax1.plot(dirt.universe , dirt['medium' ].mf, 'g', label='Medium' )
+ax1.plot(dirt.universe , dirt['high'].mf, 'r', label='High')
+ax1.set_title ('Dirt Level' )
+ax1.legend()
+ax2.plot(grease.universe , grease['low'].mf, 'b', label='Low')
+ax2.plot(grease.universe , grease['medium' ].mf, 'g', label='Medium' )
+ax2.plot(grease.universe , grease['high'].mf, 'r', label='High')
+ax2.set_title ('Grease Level' )
+ax2.legend()
+ax3.plot(wash_time .universe , wash_time ['very_short' ].mf, 'b', label='Very Sh
+ax3.plot(wash_time .universe , wash_time ['short'].mf, 'g', label='Short')
+ax3.plot(wash_time .universe , wash_time ['medium' ].mf, 'r', label='Medium' )
+ax3.plot(wash_time .universe , wash_time ['long'].mf, 'c', label='Long')
+ax3.plot(wash_time .universe , wash_time ['very_long' ].mf, 'm', label='Very Lon
+ax3.axvline(x=defuzzified_wash_time , color='k', linestyle ='--', label='Defuz
+ax3.set_title ('Wash Time' )
+ax3.legend()
+plt.tight_layout ()
+plt.show()
+Wash time: 30.00 minutesThis notebook was converted with convert.ploomber .io

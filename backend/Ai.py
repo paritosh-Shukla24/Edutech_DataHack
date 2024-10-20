@@ -111,7 +111,7 @@ responses = [
     ("hard", 20, False)
 ]
 
-# for difficulty, response_time, correct in responses:
-#     print(f"\nQuestion: {difficulty.capitalize()} | Response Time: {response_time}s | Correct: {correct}")
-#     updated_score = quiz.adjust_score(difficulty, response_time, correct)
-#     print(f"Updated score after adjustment: {updated_score}")
+for difficulty, response_time, correct in responses:
+    print(f"\nQuestion: {difficulty.capitalize()} | Response Time: {response_time}s | Correct: {correct}")
+    updated_score = quiz.adjust_score(difficulty, response_time, correct)
+    print(f"Updated score after adjustment: {updated_score}")

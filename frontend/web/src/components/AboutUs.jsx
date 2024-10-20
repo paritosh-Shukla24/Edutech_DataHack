@@ -119,10 +119,11 @@ import React, { useState, useEffect } from 'react';
 import SlideOne from './AboutUsSlides/SlideOne';
 import SlideTwo from './AboutUsSlides/SlideTwo';
 import SlideThree from './AboutUsSlides/SlideThree';
+import SlideFour from './AboutUsSlides/SlideFour'; // Import SlideFour
 
 const AboutUs = () => {
   // Slide components array
-  const slides = [<SlideOne />, <SlideTwo />, <SlideThree />];
+  const slides = [<SlideOne />, <SlideTwo />, <SlideThree />, <SlideFour />]; // Add SlideFour to the array
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);
@@ -187,7 +188,7 @@ const AboutUs = () => {
       {/* Pause/Play Button */}
       <button
         onClick={() => setAutoPlay(!autoPlay)}
-        className="absolute bottom-10 right-10 bg-white text-blue-500 px-4 py-2 rounded-full hover:bg-blue-200 z-20"
+        className="absolute bottom-20 right-10 bg-white text-blue-500 px-4 py-2 rounded-full hover:bg-blue-200 z-20"
       >
         {autoPlay ? 'Pause' : 'Play'}
       </button>

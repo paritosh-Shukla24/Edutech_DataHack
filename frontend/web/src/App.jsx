@@ -4,9 +4,9 @@ import Login from "./components/Login";
 import AboutUs from "./components/AboutUs";
 import Flashcard from "./components/Flashcard";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import EducationGame from "./components/EducationGame";
+import RoadMap from "./components/RoadMap";
 import ResourceLibrary from "./components/ResoureLibrary";
-
+import PR from "./components/PR";
 export default function App() {
   return (
     <>
@@ -17,8 +17,9 @@ export default function App() {
           <Route path="login" element={<Login />}/>
           <Route path="/" element={<AboutUs />} />
           <Route path="/flashcards" element={<Flashcard />} />
-          <Route path="/education-game" element={<EducationGame />} />
+          <Route path="/road-map" element={<RoadMap />} />
           <Route path="/resources" element={<ResourceLibrary />} />
+          <Route path="/profile" element={<PR />} />
         </Routes>
       </BrowserRouter>
     </>

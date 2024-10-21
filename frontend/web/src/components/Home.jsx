@@ -11,7 +11,7 @@ export default function Home() {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full" id="home">
       <div className="relative h-screen overflow-hidden">
         <video
           autoPlay

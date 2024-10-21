@@ -13,8 +13,8 @@ const SlideThree = () => {
 
   return (
     <div className='flex flex-col' style={blockyTextStyle}>
-      <h1 className='text-6xl justify-start items-center mb-10'>Resources Library</h1>
-      <h1 className='text-xl justify-start items-center animate-pulse mb-[10rem]'>
+      <h1 className='text-6xl justify-start items-center mb-5'>Resources</h1>
+      <h1 className='text-xl justify-start items-center animate-pulse mb-[26vh]'>
         Let us know how we can improve your learning experience!
       </h1>
       <button 

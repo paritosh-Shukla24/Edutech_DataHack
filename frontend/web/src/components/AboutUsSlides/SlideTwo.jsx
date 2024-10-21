@@ -22,8 +22,8 @@ const SlideTwo = () => {
 
   return (
     <div className='flex flex-col' style={blockyTextStyle}>
-      <h1 className='text-6xl justify-start items-center mb-10'>Personalized Road Map</h1>
-      <h1 className='text-xl justify-start items-center animate-pulse mb-48'>
+      <h1 className='text-6xl justify-start items-center mb-5'>Personalized Road Map</h1>
+      <h1 className='text-xl justify-start items-center animate-pulse mb-[26vh]'>
       A Personalized Road Map for Students
       </h1>
       <button

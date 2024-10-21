@@ -7,23 +7,14 @@
     font-weight: normal;
     font-style: normal;
   }
-/* Tailwind CSS for customizing slick-dots */
 
-.slick-dots li button:before {
-  @apply rounded-full;
-  color: black;
-  font-size: 12px;
-  opacity: 0.5;
-  transition: opacity 0.3s ease;
-}
+  nav.box-shadow {
+    box-shadow: 0px 1px 2px rgba(255, 255, 255, 0.3), 
+                0px 2px 4px rgba(255, 255, 255, 0.3), 
+                0px 4px 8px rgba(255, 255, 255, 0.3), 
+                0px 8px 16px rgba(255, 255, 255, 0.3);
+  }
+  
 
-
-.slick-dots {
-  @apply flex justify-center items-center;
-}
-
-.slick-dots li {
-  @apply mx-2;
-}
 
   

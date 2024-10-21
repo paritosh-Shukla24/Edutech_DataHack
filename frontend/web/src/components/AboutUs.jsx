@@ -46,7 +46,7 @@ export default function AboutUs() {
         className="absolute inset-0 w-full h-full object-cover opacity-50"
       />
 
-      <div className="relative z-10 flex flex-col items-center justify-center h-full">
+      <div className="relative z-10 flex flex-col items-center justify-center h-full mt-10">
         <div className="w-full max-w-4xl bg-white/95 rounded-lg shadow-2xl overflow-hidden">
           <div className="relative">
             <div

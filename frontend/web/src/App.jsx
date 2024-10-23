@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import RoadMap from "./components/RoadMap";
 import ResourceLibrary from "./components/ResoureLibrary";
 import PR from "./components/PR";
+import Dashboard from "./components/Dashboard";
 export default function App() {
   return (
     <>
@@ -20,6 +21,7 @@ export default function App() {
           <Route path="/road-map" element={<RoadMap />} />
           <Route path="/resources" element={<ResourceLibrary />} />
           <Route path="/profile" element={<PR />} />
+          <Route path="/dashboard" element={<Dashboard/>} />
         </Routes>
       </BrowserRouter>
     </>

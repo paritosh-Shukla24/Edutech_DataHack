@@ -1,7 +1,7 @@
 import React from 'react'
 import { BarChart2, Users, Clock, Download, Send, MessageCircle, Twitter, Instagram, Linkedin, Crown, ChevronRight, TrendingUp, Zap, Target } from 'lucide-react'
 
-export default function FuturisticDashboard() {
+export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-gray-100 p-8 font-sans">
       <div className="max-w-7xl mx-auto">

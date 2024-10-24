@@ -2,9 +2,26 @@ import React from 'react'
 import { BarChart2, Users, Clock, Download, Send, MessageCircle, Twitter, Instagram, Linkedin, Crown, ChevronRight, TrendingUp, Zap, Target } from 'lucide-react'
 
 export default function Dashboard() {
+
+  const blockyTextStyle = {
+    fontFamily: "Nasalization",
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-gray-100 p-8 font-sans">
+    <div className="min-h-screen text-gray-100 p-8 relative overflow-hidden w-full"
+      style={blockyTextStyle}  
+    >
+
+      <video src="/src/assets/7897-205237709.mp4"
+        autoPlay
+        muted
+        loop
+        className="absolute inset-0 w-full h-full object-cover brightness-[0.6]"
+      >
+      </video>
+
       <div className="max-w-7xl mx-auto">
+        <h1 className='flex text-2xl mt-20'>Dashboard</h1>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Key Metrics */}
           {[

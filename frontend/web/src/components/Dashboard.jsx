@@ -8,20 +8,11 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen text-gray-100 p-8 relative overflow-hidden w-full"
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-700 text-gray-100 p-8 relative overflow-hidden w-full"
       style={blockyTextStyle}  
     >
-
-      <video src="/src/assets/7897-205237709.mp4"
-        autoPlay
-        muted
-        loop
-        className="absolute inset-0 w-full h-full object-cover brightness-[0.6]"
-      >
-      </video>
-
       <div className="max-w-7xl mx-auto">
-        <h1 className='flex text-2xl mt-20'>Dashboard</h1>
+        <h1 className='flex text-6xl m-5'>Dashboard</h1>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Key Metrics */}
           {[

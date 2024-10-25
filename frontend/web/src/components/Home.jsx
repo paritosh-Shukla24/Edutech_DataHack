@@ -23,9 +23,9 @@ export default function Home() {
         </video>
 
         <div className="relative z-10 flex flex-col items-center justify-center w-full h-full" style={blockyTextStyle}>
-          <h1 className="text-6xl sm:text-9xl text-white">CURIOSITAS</h1>
+          <h1 className="text-6xl sm:text-9xl text-white">MERCURY</h1>
           <h2 className="text-lg sm:text-xl text-white mt-5 italic">
-            <ReactTyped strings={["A Novel Way To Feed Your Curiosity"]} typeSpeed={50} cursorChar="" />
+            <ReactTyped strings={["Supercharge Your Productivity"]} typeSpeed={50} cursorChar="" />
           </h2>
 
           <button
